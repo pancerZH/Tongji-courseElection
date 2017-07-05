@@ -69,17 +69,21 @@ def getCourse(header,s,course):
     courseURL='http://4m3.tongji.edu.cn/eams/doorOfStdElectCourse.action?_='+getTime()
     res=s.get(courseURL,headers=header)
 
-
-    enterURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!defaultPage.action?electionProfile.id=3923'
+    soup=BeautifulSoup(res.content,'html.parser')
+    str=soup.a['href']
+    pos=str.find('id')
+    turnId=str[pos+3:pos+7]
+    
+    enterURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!defaultPage.action?electionProfile.id='+turnId;
     res=s.get(enterURL,headers=header)
 
-    readCourseURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!data.action?profileId=3923'
+    readCourseURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!data.action?profileId='+turnId
     res=s.get(readCourseURL,headers=header)
     string=res.content.decode('utf-8')
     pos=string.find(course)
     courseID=string[pos-20:pos-5]
 
-    stdNumURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!queryStdCount.action?profileId=3923'
+    stdNumURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!queryStdCount.action?profileId='+turnId;
     while True:
         res=s.get(stdNumURL,headers=header)
         string=res.content.decode('utf-8')
