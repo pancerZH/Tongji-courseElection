@@ -70,16 +70,16 @@ def getCourse(header,s,course):
     res=s.get(courseURL,headers=header)
 
 
-    enterURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!defaultPage.action?electionProfile.id=3883'
+    enterURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!defaultPage.action?electionProfile.id=3923'
     res=s.get(enterURL,headers=header)
 
-    readCourseURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!data.action?profileId=3883'
+    readCourseURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!data.action?profileId=3923'
     res=s.get(readCourseURL,headers=header)
     string=res.content.decode('utf-8')
     pos=string.find(course)
     courseID=string[pos-20:pos-5]
 
-    stdNumURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!queryStdCount.action?profileId=3883'
+    stdNumURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!queryStdCount.action?profileId=3923'
     while True:
         res=s.get(stdNumURL,headers=header)
         string=res.content.decode('utf-8')
