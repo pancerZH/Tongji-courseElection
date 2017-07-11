@@ -7,6 +7,7 @@ import re
 from bs4 import BeautifulSoup
 
 import mail
+import courseStart
 
 #menuURL='http://4m3.tongji.edu.cn/eams/home!submenus.action?menu.id='
 #welcomeURL='http://4m3.tongji.edu.cn/eams/home!welcome.action'
@@ -112,38 +113,39 @@ def getCourse(header,s,course):
                 return True
 
 def main():
-        username=input('Please enter your username: ')
-        password=getpass.getpass('Please enter your password: ')
-        header={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8','Accept-Encoding': 'gzip, deflate, sdch',
-        'Accept-Language': 'zh-CN,zh;q=0.8','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'}
-        s=requests.session()
-        course=input('Please enter the id of the course you want: ')
+    courseStart.draw()
+    username=courseStart.getUser()
+    password=courseStart.getPwd()
+    header={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8','Accept-Encoding': 'gzip, deflate, sdch',
+    'Accept-Language': 'zh-CN,zh;q=0.8','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'}
+    s=requests.session()
+    course=courseStart.getCourse()
 
-        success=False
-        sender=input('Please enter your e-mail address: ')
-        mailPassword=getpass.getpass('Please enter the password: ')
-        sucSubject='Congratulations!'
-        falSubject='Sorry'
-        sucBody='I have caught your course.'
-        falBody='I can not catch your course.'
-        
-        try:
-            login(username,password,header,s)
-        except:
-            print('failed to login, please try again!')
+    success=False
+    sender=courseStart.getMail()
+    mailPassword=courseStart.getMailPwd()
+    sucSubject='Congratulations!'
+    falSubject='Sorry'
+    sucBody='I have caught your course.'
+    falBody='I can not catch your course.'
+    
+    try:
+        login(username,password,header,s)
+    except:
+        print('failed to login, please try again!')
 
-        try:
-            success=getCourse(header,s,str(course))
-        except:
-            print('failed to catch the course!')
+    try:
+        success=getCourse(header,s,str(course))
+    except:
+        print('failed to catch the course!')
 
-        try:
-            if success:
-                mail.sendMail(sender,mailPassword,sender,sucSubject,sucBody)
-            else:
-                mail.sendMail(sender,mailPassword,sender,falSubject,falBody)
-        except:
-            print('failed to send the mail.')
+    try:
+        if success:
+            mail.sendMail(sender,mailPassword,sender,sucSubject,sucBody)
+        else:
+            mail.sendMail(sender,mailPassword,sender,falSubject,falBody)
+    except:
+        print('failed to send the mail.')
 
 if __name__=='__main__':
     main()
