@@ -1,6 +1,8 @@
 # Tongji-courseElection
 可用于三四轮选课时捡漏
 
+[Download](https://github.com/pancerZH/Tongji-courseElection/releases/download/v1.0/catchCourseTool.exe)(已打包为exe文件)
+
 ### 使用的python版本
 python2版本基于python2.7  
 python3版本基于python3.6
