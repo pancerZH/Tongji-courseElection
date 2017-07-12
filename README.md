@@ -21,6 +21,22 @@
     越长的延迟意味着越大的失败或者错过的可能性：也许有人随便尝试下就能拿到这个没有显示出来的名额，但是总有人运气好，不是吗？
 **注意，此脚本不会检查目标课程是否与已有课程冲突，故有可能产生课程重叠，所以请务必检查冲突问题。**
 
+### 用到的模块
+- python2.7
+	1. requests
+	2. getpass
+	3. time
+	4. BeautifulSoup
+- python3.6
+	1. requests
+	2. time
+	3. re
+	4. BeautifulSoup
+	5. tkinter
+	6. smtplib
+	6. getpass
+	7. email
+
 ### v1.0使用说明
     1. 此版本仅针对暑假小学期测试通过
     2. 选课成功或失败后会发送通知邮件（使用python2.7版本则无邮件通知）
