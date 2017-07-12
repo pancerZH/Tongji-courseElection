@@ -1,7 +1,6 @@
 # coding:utf-8
 
 import requests
-import getpass
 import time
 import re
 from bs4 import BeautifulSoup
