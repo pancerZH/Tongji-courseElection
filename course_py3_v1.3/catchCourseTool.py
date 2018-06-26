@@ -98,7 +98,7 @@ def getCourse(header,s,course):
         scnum = int(re.sub('\D', '', scstr))  #获得当前人数
         lcstr = string[pos + 25:pos + 30]
         lcnum = int(re.sub('\D', '', lcstr))  #获得容量
-        print('执行次数：{}，{}/{}'.format(times, scnum, lcnum))
+        print('执行次数：{}，{}/{}'。format(times, scnum, lcnum))
         times += 1
         
         if scnum<lcnum:
