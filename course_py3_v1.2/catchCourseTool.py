@@ -6,7 +6,6 @@ import re
 from bs4 import BeautifulSoup
 
 import mail
-import courseStart
 
 #menuURL='http://4m3.tongji.edu.cn/eams/home!submenus.action?menu.id='
 #welcomeURL='http://4m3.tongji.edu.cn/eams/home!welcome.action'
@@ -47,7 +46,6 @@ def login(username,password,header,s):
     message['SAMLResponse']=soup.input['value']
     message['RelayState']=soup.input.next_sibling.next_sibling['value']
     res=s.post(messURL,headers=header,data=message)
-    #print res.content.decode('utf-8')
 
 def getTablet(header,s):
 
@@ -78,30 +76,32 @@ def getCourse(header,s,course):
     soup=BeautifulSoup(res.content,'html.parser')
     str=soup.a['href']
     pos=str.find('id')
-    turnId=str[pos+3:pos+7]
+    turnId = str[pos + 3:pos + 7]
 
-    enterURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!defaultPage.action?electionProfile.id='+turnId
-    res=s.get(enterURL,headers=header)
+    enterURL='http://4m3.tongji.edu.cn/eams/tJStdElectCourse!defaultPage.action?electionProfile.id='+turnId
+    res = s.get(enterURL, headers=header)
 
-    readCourseURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!data.action?profileId='+turnId
+    readCourseURL='http://4m3.tongji.edu.cn/eams/tJStdElectCourse!data.action?profileId='+turnId
     res=s.get(readCourseURL,headers=header)
     string=res.content.decode('utf-8')
     pos=string.find(course)
-    courseID=string[pos-20:pos-5]
+    courseID = string[pos - 20:pos - 5]
     
-    stdNumURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!queryStdCount.action?profileId='+turnId
+    stdNumURL='http://4m3.tongji.edu.cn/eams/tJStdElectCourse!queryStdCount.action?profileId='+turnId
     while True:
-        time.sleep(1)
+        time.sleep(5)
         res=s.get(stdNumURL,headers=header)
-        string=res.content.decode('utf-8')
-        pos=string.find(courseID)
-        scstr=str(string[pos+21:pos+25])
-        scnum=int(re.sub('\D','',scstr))#获得当前人数
-        lcstr=str(string[pos+25:pos+30])
-        lcnum=int(re.sub('\D','',lcstr))#获得容量
+        string = res.content.decode('utf-8')
+        pos = string.find(courseID)
+        scstr = string[pos + 21:pos + 25]
+        scnum = int(re.sub('\D', '', scstr))  #获得当前人数
+        print(scnum)
+        lcstr = string[pos + 25:pos + 30]
+        lcnum = int(re.sub('\D', '', lcstr))  #获得容量
+        print(lcnum)
     
         if scnum<lcnum:
-            catchCourseURL='http://4m3.tongji.edu.cn/eams/sJStdElectCourse!batchOperator.action'
+            catchCourseURL='http://4m3.tongji.edu.cn/eams/tJStdElectCourse!batchOperator.action'
             data='?electLessonIds='+courseID
             catchCourseURL+=data
             catchCourseURL=catchCourseURL+'&_='+getTime()
@@ -112,17 +112,16 @@ def getCourse(header,s,course):
                 return True
 
 def main():
-    courseStart.draw()
-    username=courseStart.getUser()
-    password=courseStart.getPwd()
+    username = input('请输入学号：')
+    password = input('请输入密码：')
     header={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8','Accept-Encoding': 'gzip, deflate, sdch',
     'Accept-Language': 'zh-CN,zh;q=0.8','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'}
     s=requests.session()
-    course=courseStart.getCourse()
+    course = input('请输入要选择的课号：')
 
     success=False
-    sender=courseStart.getMail()
-    mailPassword=courseStart.getMailPwd()
+    sender = input('请输入QQ邮箱：')
+    mailPassword = input('请输入邮箱密码：')
     sucSubject='Congratulations!'
     falSubject='Sorry'
     sucBody='I have caught your course.'
