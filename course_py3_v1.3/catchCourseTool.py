@@ -88,6 +88,7 @@ def getCourse(header,s,course):
     courseID = string[pos - 20:pos - 5]
     
     stdNumURL='http://4m3.tongji.edu.cn/eams/tJStdElectCourse!queryStdCount.action?profileId='+turnId
+    times = 0
     while True:
         time.sleep(5)
         res=s.get(stdNumURL,headers=header)
@@ -95,11 +96,11 @@ def getCourse(header,s,course):
         pos = string.find(courseID)
         scstr = string[pos + 21:pos + 25]
         scnum = int(re.sub('\D', '', scstr))  #获得当前人数
-        print(scnum)
         lcstr = string[pos + 25:pos + 30]
         lcnum = int(re.sub('\D', '', lcstr))  #获得容量
-        print(lcnum)
-    
+        print('执行次数：{}，{}/{}'。format(times, scnum, lcnum))
+        times += 1
+        
         if scnum<lcnum:
             catchCourseURL='http://4m3.tongji.edu.cn/eams/tJStdElectCourse!batchOperator.action'
             data='?electLessonIds='+courseID
